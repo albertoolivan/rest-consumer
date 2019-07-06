@@ -1,4 +1,4 @@
-package org.adidas.code.challange.rest.consumer;
+package org.adidas.code.challange.rest.consumer.controller;
 
 import java.util.List;
 
@@ -18,6 +18,11 @@ public class ServiceInstanceRestController {
 	@RequestMapping("/service-instances/{applicationName}")
 	public List<ServiceInstance> serviceInstancesByApplicationName(@PathVariable String applicationName) {
 		return this.discoveryClient.getInstances(applicationName);
+	}
+	
+	@RequestMapping("/service-list/")
+	public List<String> serviceList() {
+		return this.discoveryClient.getServices();
 	}
 
 }
