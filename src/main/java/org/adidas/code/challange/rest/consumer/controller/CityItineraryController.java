@@ -37,21 +37,6 @@ public class CityItineraryController {
 
 	@Autowired
 	RestTemplateService restTemplateService;
-	
-	public String serviceInstanceInfo(InstanceInfo instance) {
-		logger.info("instance {}", instance);
-		logger.info("instance homepage {}", instance.getHomePageUrl());
-		logger.info("instance getAppGroupName {}", instance.getAppGroupName());
-		logger.info("instance getASGName {}", instance.getASGName());
-		logger.info("instance getHealthCheckUrls {}", instance.getHealthCheckUrls());
-		logger.info("instance getHostName {}", instance.getHostName());
-		logger.info("instance getId {}", instance.getId());
-		logger.info("instance getInstanceId {}", instance.getInstanceId());
-		logger.info("instance getMetadata {}", instance.getMetadata());
-		logger.info("instance getPort {}", instance.getPort());
-		logger.info("instance getStatusPageUrl {}", instance.getStatusPageUrl());
-		return instance.getHomePageUrl();
-	}
 
 	/**
 	 * GET /city/itinerary_short
@@ -72,18 +57,20 @@ public class CityItineraryController {
 		try {
 			logger.info("Rest findItinerary() called with cityOriginId {} cityDestinationId {}", cityOriginId,
 					cityDestinationId);
-
+			// check if service is available
 			List<String> serviceList = discoveryClient.getServices();
 			if (serviceList.contains(REST_PRODUCER)) {
+				// display service info
 				InstanceInfo instance = eurekaClient.getNextServerFromEureka(REST_PRODUCER, false);
-				serviceInstanceInfo(instance);
+				logger.debug("Instance server status: {}", instance.getStatus());
+				// prepare call
 				IntineraryDTO result = null;
-				// call rest-producer
-				String apiUrl = instance.getHomePageUrl() + "city/itinerary_short";
+				String apiUrl = "http://rest-producer/city/itinerary_short";
 				Map<String, Object> requestParams = new HashMap<>();
 				requestParams.put("cityOriginId", cityOriginId);
 				requestParams.put("cityDestinationId", cityDestinationId);
-				logger.info("Call service url {}", apiUrl);
+				logger.info("Call service url {} with {}", apiUrl, requestParams);
+				// call rest-producer
 				result = restTemplateService.getForEntity(apiUrl, IntineraryDTO.class, null, requestParams);
 				logger.info("Rest findItinerary() Return {}", result);
 				if (result != null) {

@@ -32,8 +32,7 @@ public class RestTemplateService {
 	RestTemplate restTemplate;
 
 	@Bean
-	// not working with loadBalanced
-	// @LoadBalanced
+	@LoadBalanced
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
