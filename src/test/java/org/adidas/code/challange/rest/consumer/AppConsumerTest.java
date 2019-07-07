@@ -71,6 +71,20 @@ public class AppConsumerTest {
 		then(response.getBody()).contains("rest-consumer");
 	}
 
+	@Test
+	public void findItineraryShortTest() throws InterruptedException {
+		// registration has to take place...
+		Thread.sleep(5000);
+
+		logger.info("Call /find_itinerary_short to check controller return Rest-prodcuer is not available.");
+		ResponseEntity<String> response = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.port + "/find_itinerary_short?cityOriginId=MAD&cityDestinationId=BER", String.class);
+
+		logger.info("Response: {}", response.getBody());
+		then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		then(response.getBody()).contains("Rest-producer service not available, please try later...");
+	}
+	
 	@Configuration
 	@EnableAutoConfiguration
 	@EnableEurekaServer
