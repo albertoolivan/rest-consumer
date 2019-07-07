@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ${springboot.app.name:rest-consumer}
+  security:
+    rest:
+      user: user_rest
+      password: paSs123_w0rd
+server:
+  port: 8082
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${registry.host:localhost}:8761/eureka/
