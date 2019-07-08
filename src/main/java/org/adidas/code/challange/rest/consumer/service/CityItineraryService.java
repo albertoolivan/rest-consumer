@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.adidas.code.challange.rest.consumer.exception.RestProducerNotFoundException;
+import org.adidas.code.challange.rest.dto.CityDTO;
 import org.adidas.code.challange.rest.dto.IntineraryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +21,14 @@ public class CityItineraryService {
 
 	private static Logger logger = LoggerFactory.getLogger(CityItineraryService.class);
 
+	public static final String HTTP = "http://";
 	public static final String REST_PRODUCER = "rest-producer";
-	public static final String ITINERARY_SHORT = "/city/itinerary_short";
-	public static final String ITINERARY_LESS = "/city/itinerary_less";
+	public static final String CITY_LIST = "/city/all";
+	public static final String CITY_INFO = "/city/info/{id}";
+	public static final String ITINERARY_SHORT = "/city/itinerary-short";
+	public static final String ITINERARY_LESS = "/city/itinerary-less";
+
+	public static final String REST_NOT_FOUND_ERROR = "Rest-producer service not available, please try later...";
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
@@ -32,13 +39,48 @@ public class CityItineraryService {
 	@Autowired
 	RestTemplateService restTemplateService;
 
+	@SuppressWarnings("unchecked")
+	public List<CityDTO> cityList() {
+		String apiUrl = HTTP + REST_PRODUCER + CITY_LIST;
+		List<CityDTO> result = null;
+		// check if service is available
+		List<String> serviceList = discoveryClient.getServices();
+		if (serviceList.contains(REST_PRODUCER)) {
+			logger.info("Call service url {}", apiUrl);
+			// call rest-producer
+			result = restTemplateService.getForEntity(apiUrl, List.class, null);
+			logger.info("Rest cityList() Return {}", result);
+		} else {
+			throw new RestProducerNotFoundException(REST_NOT_FOUND_ERROR);
+		}
+		return result;
+	}
+
+	public CityDTO cityInfo(String id) {
+		String apiUrl = HTTP + REST_PRODUCER + CITY_INFO;
+		CityDTO result = null;
+		// check if service is available
+		List<String> serviceList = discoveryClient.getServices();
+		if (serviceList.contains(REST_PRODUCER)) {
+			Map<String, String> params = new HashMap<>();
+			params.put("id", id);
+			logger.info("Call service url {} with {}", apiUrl, id);
+			// call rest-producer
+			result = restTemplateService.getForEntity(apiUrl, CityDTO.class, params);
+			logger.info("Rest cityInfo() Return {}", result);
+		} else {
+			throw new RestProducerNotFoundException(REST_NOT_FOUND_ERROR);
+		}
+		return result;
+	}
+
 	public IntineraryDTO getItineraryShort(String cityOriginId, String cityDestinationId) {
-		String apiUrl = "http://" + REST_PRODUCER + ITINERARY_SHORT;
+		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_SHORT;
 		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
 	}
 
 	public IntineraryDTO getItineraryLess(String cityOriginId, String cityDestinationId) {
-		String apiUrl = "http://" + REST_PRODUCER + ITINERARY_LESS;
+		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_LESS;
 		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
 	}
 
@@ -59,10 +101,7 @@ public class CityItineraryService {
 			result = restTemplateService.getForEntity(apiUrl, IntineraryDTO.class, null, requestParams);
 			logger.info("Rest findItinerary() Return {}", result);
 		} else {
-			String message = "Rest-producer service not available, please try later...";
-			logger.info(message);
-			result = new IntineraryDTO();
-			result.setMessage(message);
+			throw new RestProducerNotFoundException(REST_NOT_FOUND_ERROR);
 		}
 		return result;
 	}

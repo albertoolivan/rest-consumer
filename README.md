@@ -20,8 +20,10 @@ $ docker run -p 8082:8082 rest-consumer
 
 4) Test in browser (need service-registry and rest-producer up) 
 
-http://localhost:8082/find_itinerary_short?cityOriginId=MAD&cityDestinationId=BER
-http://localhost:8082/find_itinerary_less?cityOriginId=MAD&cityDestinationId=BER
+http://localhost:8082/city/all
+http://localhost:8082/city/info/MAD
+http://localhost:8082/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER
+http://localhost:8082/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER
 
 5) Swagger Rest doc
 
