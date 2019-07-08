@@ -43,6 +43,12 @@
 			<version>2.9.2</version>
 		</dependency>
 
+		<!-- better startup performance -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-indexer</artifactId>
+		</dependency>
+
 		<!-- Base64 codec -->
 		<dependency>
 			<groupId>commons-codec</groupId>
