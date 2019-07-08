@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.adidas.code.challange</groupId>
-	<artifactId>rest.consumer</artifactId>
+	<artifactId>rest-consumer</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -28,7 +28,7 @@
 		<!-- Common DTO's -->
 		<dependency>
 			<groupId>org.adidas.code.challange</groupId>
-			<artifactId>rest.dto</artifactId>
+			<artifactId>rest-dto</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 

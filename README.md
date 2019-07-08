@@ -1,12 +1,12 @@
 # ch.rest.consumer
 
-0) Pre requirement - install rest.dto-1.0.0-SNAPSHOT.jar 
+0) Pre requirement - install rest-dto-1.0.0-SNAPSHOT.jar 
 
 https://github.com/albertoolivan/ch.rest.dto.git
 $ mvn install
 
 
-1) Maven install to get rest.consumer-1.0.0-SNAPSHOT.jar
+1) Maven install to get rest-consumer-1.0.0-SNAPSHOT.jar
 
 $ mvn install
 

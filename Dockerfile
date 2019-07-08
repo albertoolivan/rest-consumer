@@ -11,11 +11,11 @@ VOLUME /tmp
 EXPOSE 8082
 
 # The application's jar file
-ARG JAR_FILE=target/rest.consumer-1.0.0-SNAPSHOT.jar
+ARG JAR_FILE=target/rest-consumer-1.0.0-SNAPSHOT.jar
 
 # Add the application's jar to the container
-ADD ${JAR_FILE} rest.consumer.jar
+ADD ${JAR_FILE} rest-consumer.jar
 
 # Run the jar file 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/rest.consumer.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/rest-consumer.jar"]
 
