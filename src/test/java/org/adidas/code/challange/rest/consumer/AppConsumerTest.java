@@ -76,12 +76,12 @@ public class AppConsumerTest {
 		// registration has to take place...
 		Thread.sleep(5000);
 
-		logger.info("Call /find_itinerary_short to check controller return Rest-prodcuer is not available.");
+		logger.info("Call /find_itinerary-short to check controller return Rest-producer is not available.");
 		ResponseEntity<String> response = this.testRestTemplate
-				.getForEntity("http://localhost:" + this.port + "/find_itinerary_short?cityOriginId=MAD&cityDestinationId=BER", String.class);
+				.getForEntity("http://localhost:" + this.port + "/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER", String.class);
 
 		logger.info("Response: {}", response.getBody());
-		then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
 		then(response.getBody()).contains("Rest-producer service not available, please try later...");
 	}
 	
