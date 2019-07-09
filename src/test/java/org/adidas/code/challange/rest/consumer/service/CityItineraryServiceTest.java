@@ -72,7 +72,7 @@ public class CityItineraryServiceTest {
 		Mockito.when(restTemplateService.getForEntity(Mockito.anyString(), Mockito.eq(IntineraryDTO.class),
 				Mockito.any(), Mockito.anyMap())).thenReturn(intineraryDTOExpected);
 		// test
-		IntineraryDTO check = cityItineraryService.getItinerary("MAD", "BCN", LocalDateTime.of(2019, 7, 10, 10, 30),
+		IntineraryDTO check = cityItineraryService.getItinerary("MAD", "BCN", LocalDateTime.of(2019, 7, 10, 01, 30),
 				"url");
 		logger.info("Test - getItinerary: " + check);
 		assertEquals(intineraryDTOExpected, check);
