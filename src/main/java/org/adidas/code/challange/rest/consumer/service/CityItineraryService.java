@@ -1,5 +1,6 @@
 package org.adidas.code.challange.rest.consumer.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,27 +87,31 @@ public class CityItineraryService {
 	}
 
 	/**
-	 * Get IntineraryDTO from short distance method, calling rest-producer /city/itinerary-short
+	 * Get IntineraryDTO from short distance method, calling rest-producer
+	 * /city/itinerary-short
 	 * 
 	 * @param cityOriginId
 	 * @param cityDestinationId
+	 * @param departureTime
 	 * @return IntineraryDTO
 	 */
-	public IntineraryDTO getItineraryShort(String cityOriginId, String cityDestinationId) {
+	public IntineraryDTO getItineraryShort(String cityOriginId, String cityDestinationId, LocalDateTime departureTime) {
 		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_SHORT;
-		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
+		return getItinerary(cityOriginId, cityDestinationId, departureTime, apiUrl);
 	}
 
 	/**
-	 * Get IntineraryDTO from less steps method, calling rest-producer /city/itinerary-less
+	 * Get IntineraryDTO from less steps method, calling rest-producer
+	 * /city/itinerary-less
 	 * 
 	 * @param cityOriginId
 	 * @param cityDestinationId
+	 * @param departureTime
 	 * @return IntineraryDTO
 	 */
-	public IntineraryDTO getItineraryLess(String cityOriginId, String cityDestinationId) {
+	public IntineraryDTO getItineraryLess(String cityOriginId, String cityDestinationId, LocalDateTime departureTime) {
 		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_LESS;
-		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
+		return getItinerary(cityOriginId, cityDestinationId, departureTime, apiUrl);
 	}
 
 	/**
@@ -114,10 +119,12 @@ public class CityItineraryService {
 	 * 
 	 * @param cityOriginId
 	 * @param cityDestinationId
+	 * @param departureTime
 	 * @param apiUrl
 	 * @return IntineraryDTO
 	 */
-	public IntineraryDTO getItinerary(String cityOriginId, String cityDestinationId, String apiUrl) {
+	public IntineraryDTO getItinerary(String cityOriginId, String cityDestinationId, LocalDateTime departureTime,
+			String apiUrl) {
 		IntineraryDTO result = null;
 		// check if service is available
 		List<String> serviceList = discoveryClient.getServices();
@@ -129,6 +136,7 @@ public class CityItineraryService {
 			Map<String, Object> requestParams = new HashMap<>();
 			requestParams.put("cityOriginId", cityOriginId);
 			requestParams.put("cityDestinationId", cityDestinationId);
+			requestParams.put("departureTime", departureTime);
 			logger.info("Call service url {} with {}", apiUrl, requestParams);
 			// call rest-producer
 			result = restTemplateService.getForEntity(apiUrl, IntineraryDTO.class, null, requestParams);

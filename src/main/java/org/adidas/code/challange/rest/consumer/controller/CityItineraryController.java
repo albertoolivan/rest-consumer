@@ -1,5 +1,6 @@
 package org.adidas.code.challange.rest.consumer.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.adidas.code.challange.rest.consumer.exception.RestProducerNotFoundException;
@@ -10,6 +11,7 @@ import org.adidas.code.challange.rest.dto.IntineraryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -90,23 +92,26 @@ public class CityItineraryController {
 	 * GET /city/find-itinerary-short
 	 * 
 	 * Example:
-	 * http://localhost:8082/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER
+	 * http://localhost:8082/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER&departureTime=2019-07-10T01:30:00.000Z
 	 * 
 	 * Get IntineraryDTO info
 	 * 
 	 * @param cityOriginId
 	 * @param cityDestinationId
+	 * @param departureTime
 	 * @return IntineraryDTO
 	 */
 	@RequestMapping(value = "/find-itinerary-short", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findItineraryShort(
 			@RequestParam(value = "cityOriginId", required = true) String cityOriginId,
-			@RequestParam(value = "cityDestinationId", required = true) String cityDestinationId) {
+			@RequestParam(value = "cityDestinationId", required = true) String cityDestinationId,
+			@RequestParam(value = "departureTime", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime) {
 		try {
-			logger.info("Rest findItineraryShort() called with cityOriginId {} cityDestinationId {}", cityOriginId,
-					cityDestinationId);
+			logger.info("Rest findItineraryShort() called with cityOriginId {} cityDestinationId {} departureTime {}",
+					cityOriginId, cityDestinationId, departureTime);
 
-			IntineraryDTO result = cityItineraryService.getItineraryShort(cityOriginId, cityDestinationId);
+			IntineraryDTO result = cityItineraryService.getItineraryShort(cityOriginId, cityDestinationId,
+					departureTime);
 
 			if (result != null) {
 				return ResponseEntity.ok().body(result);
@@ -125,23 +130,26 @@ public class CityItineraryController {
 	 * GET /city/find-itinerary-less
 	 * 
 	 * Example:
-	 * http://localhost:8082/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER
+	 * http://localhost:8082/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER&departureTime=2019-07-10T01:30:00.000Z
 	 * 
 	 * Get IntineraryDTO info
 	 * 
 	 * @param cityOriginId
 	 * @param cityDestinationId
+	 * @param departureTime
 	 * @return IntineraryDTO
 	 */
 	@RequestMapping(value = "/find-itinerary-less", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findItineraryLess(
 			@RequestParam(value = "cityOriginId", required = true) String cityOriginId,
-			@RequestParam(value = "cityDestinationId", required = true) String cityDestinationId) {
+			@RequestParam(value = "cityDestinationId", required = true) String cityDestinationId,
+			@RequestParam(value = "departureTime", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime) {
 		try {
-			logger.info("Rest findItineraryLess() called with cityOriginId {} cityDestinationId {}", cityOriginId,
-					cityDestinationId);
+			logger.info("Rest findItineraryLess() called with cityOriginId {} cityDestinationId {} departureTime {}",
+					cityOriginId, cityDestinationId, departureTime);
 
-			IntineraryDTO result = cityItineraryService.getItineraryLess(cityOriginId, cityDestinationId);
+			IntineraryDTO result = cityItineraryService.getItineraryLess(cityOriginId, cityDestinationId,
+					departureTime);
 
 			if (result != null) {
 				return ResponseEntity.ok().body(result);

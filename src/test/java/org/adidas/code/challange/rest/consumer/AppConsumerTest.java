@@ -78,7 +78,7 @@ public class AppConsumerTest {
 
 		logger.info("Call /find_itinerary-short to check controller return Rest-producer is not available.");
 		ResponseEntity<String> response = this.testRestTemplate
-				.getForEntity("http://localhost:" + this.port + "/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER", String.class);
+				.getForEntity("http://localhost:" + this.port + "/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER&departureTime=2019-07-10T01:30:00.000Z", String.class);
 
 		logger.info("Response: {}", response.getBody());
 		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
@@ -92,7 +92,7 @@ public class AppConsumerTest {
 
 		logger.info("Call /find_itinerary-less to check controller return Rest-producer is not available.");
 		ResponseEntity<String> response = this.testRestTemplate
-				.getForEntity("http://localhost:" + this.port + "/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER", String.class);
+				.getForEntity("http://localhost:" + this.port + "/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER&departureTime=2019-07-10T01:30:00.000Z", String.class);
 
 		logger.info("Response: {}", response.getBody());
 		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);

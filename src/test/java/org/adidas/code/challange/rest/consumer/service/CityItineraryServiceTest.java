@@ -2,6 +2,7 @@ package org.adidas.code.challange.rest.consumer.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,8 @@ public class CityItineraryServiceTest {
 		Mockito.when(restTemplateService.getForEntity(Mockito.anyString(), Mockito.eq(IntineraryDTO.class),
 				Mockito.any(), Mockito.anyMap())).thenReturn(intineraryDTOExpected);
 		// test
-		IntineraryDTO check = cityItineraryService.getItinerary("MAD", "BCN", "url");
+		IntineraryDTO check = cityItineraryService.getItinerary("MAD", "BCN", LocalDateTime.of(2019, 7, 10, 10, 30),
+				"url");
 		logger.info("Test - getItinerary: " + check);
 		assertEquals(intineraryDTOExpected, check);
 	}
