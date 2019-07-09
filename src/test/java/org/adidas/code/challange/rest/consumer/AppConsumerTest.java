@@ -60,7 +60,7 @@ public class AppConsumerTest {
 	@Test
 	public void shouldRegisterClientInEurekaServer() throws InterruptedException {
 		// registration has to take place...
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 
 		logger.info("Call service-instances/rest-consumer to check if servie is registered in EurekaServer");
 		ResponseEntity<String> response = this.testRestTemplate
@@ -74,11 +74,39 @@ public class AppConsumerTest {
 	@Test
 	public void findItineraryShortTest() throws InterruptedException {
 		// registration has to take place...
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 
 		logger.info("Call /find_itinerary-short to check controller return Rest-producer is not available.");
 		ResponseEntity<String> response = this.testRestTemplate
 				.getForEntity("http://localhost:" + this.port + "/find-itinerary-short?cityOriginId=MAD&cityDestinationId=BER", String.class);
+
+		logger.info("Response: {}", response.getBody());
+		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+		then(response.getBody()).contains("Rest-producer service not available, please try later...");
+	}
+	
+	@Test
+	public void findItineraryLessTest() throws InterruptedException {
+		// registration has to take place...
+		Thread.sleep(3000);
+
+		logger.info("Call /find_itinerary-less to check controller return Rest-producer is not available.");
+		ResponseEntity<String> response = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.port + "/find-itinerary-less?cityOriginId=MAD&cityDestinationId=BER", String.class);
+
+		logger.info("Response: {}", response.getBody());
+		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+		then(response.getBody()).contains("Rest-producer service not available, please try later...");
+	}
+	
+	@Test
+	public void getCityInfoTest() throws InterruptedException {
+		// registration has to take place...
+		Thread.sleep(3000);
+
+		logger.info("Call /city/info to check controller return Rest-producer is not available.");
+		ResponseEntity<String> response = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.port + "/city/info/MAD", String.class);
 
 		logger.info("Response: {}", response.getBody());
 		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
