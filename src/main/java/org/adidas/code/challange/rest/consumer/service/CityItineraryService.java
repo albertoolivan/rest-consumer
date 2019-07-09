@@ -39,6 +39,11 @@ public class CityItineraryService {
 	@Autowired
 	RestTemplateService restTemplateService;
 
+	/**
+	 * Get List<CityDTO> calling rest-producer /city/all
+	 * 
+	 * @return List<CityDTO>
+	 */
 	@SuppressWarnings("unchecked")
 	public List<CityDTO> cityList() {
 		String apiUrl = HTTP + REST_PRODUCER + CITY_LIST;
@@ -56,6 +61,12 @@ public class CityItineraryService {
 		return result;
 	}
 
+	/**
+	 * Get CityDTO calling rest-producer /city/info/{id}
+	 * 
+	 * @param id
+	 * @return CityDTO
+	 */
 	public CityDTO cityInfo(String id) {
 		String apiUrl = HTTP + REST_PRODUCER + CITY_INFO;
 		CityDTO result = null;
@@ -74,16 +85,38 @@ public class CityItineraryService {
 		return result;
 	}
 
+	/**
+	 * Get IntineraryDTO from short distance method, calling rest-producer /city/itinerary-short
+	 * 
+	 * @param cityOriginId
+	 * @param cityDestinationId
+	 * @return IntineraryDTO
+	 */
 	public IntineraryDTO getItineraryShort(String cityOriginId, String cityDestinationId) {
 		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_SHORT;
 		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
 	}
 
+	/**
+	 * Get IntineraryDTO from less steps method, calling rest-producer /city/itinerary-less
+	 * 
+	 * @param cityOriginId
+	 * @param cityDestinationId
+	 * @return IntineraryDTO
+	 */
 	public IntineraryDTO getItineraryLess(String cityOriginId, String cityDestinationId) {
 		String apiUrl = HTTP + REST_PRODUCER + ITINERARY_LESS;
 		return getItinerary(cityOriginId, cityDestinationId, apiUrl);
 	}
 
+	/**
+	 * Get IntineraryDTO from url (short or less)
+	 * 
+	 * @param cityOriginId
+	 * @param cityDestinationId
+	 * @param apiUrl
+	 * @return IntineraryDTO
+	 */
 	public IntineraryDTO getItinerary(String cityOriginId, String cityDestinationId, String apiUrl) {
 		IntineraryDTO result = null;
 		// check if service is available
