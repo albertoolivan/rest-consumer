@@ -3,18 +3,25 @@ package org.adidas.code.challange.rest.consumer.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
-import org.adidas.code.challange.rest.consumer.controller.CityItineraryController;
+import org.adidas.code.challange.rest.dto.CityDTO;
+import org.adidas.code.challange.rest.dto.IntineraryDTO;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 public class RestTemplateServiceTest {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(RestTemplateServiceTest.class);
-	
+
 	@Test
 	public void uriBuilderTest() {
 		// prepare
@@ -40,7 +47,7 @@ public class RestTemplateServiceTest {
 		assertNotNull(stringTest2);
 		assertEquals(stringCheck1, stringTest1);
 	}
-	
+
 	@Test
 	public void uriParamBuilderTest() {
 		// prepare
@@ -65,6 +72,29 @@ public class RestTemplateServiceTest {
 		logger.info("Test - uriParamBuilder (2): " + stringTest2 + " = " + stringCheck2);
 		assertNotNull(stringTest2);
 		assertEquals(stringCheck1, stringTest1);
+	}
+
+	@Test
+	public void deserializeStringJsonToObjectTest() throws JsonParseException, JsonMappingException, IOException {
+		// prepare
+		RestTemplateService restTemplateService = new RestTemplateService();
+		IntineraryDTO intineraryDTO = new IntineraryDTO();
+		intineraryDTO.setMessage("Itinerary found successfull.");
+		intineraryDTO.setDurationTime("12:30");
+		intineraryDTO.setSumPathWeight(1500);
+		intineraryDTO.setArrivalTime(LocalDateTime.of(2019, 7, 10, 1, 30));
+		intineraryDTO.setDepartureTime(LocalDateTime.of(2019, 7, 10, 14, 0));
+		LinkedList<CityDTO> path = new LinkedList<>();
+		path.add(new CityDTO("MAD", "Madrid"));
+		path.add(new CityDTO("BCN", "Barcelona"));
+		intineraryDTO.setPath(path);
+		String sTest = "{\"path\":[{\"id\":\"MAD\",\"name\":\"Madrid\",\"distanceList\":[]},{\"id\":\"BCN\",\"name\":\"Barcelona\",\"distanceList\":[]}],\"sumPathWeight\":1500,\"message\":\"Itinerary found successfull.\",\"departureTime\":[2019,7,10,14,0],\"arrivalTime\":[2019,7,10,1,30],\"durationTime\":\"12:30\"}";
+		// test
+		IntineraryDTO intineraryDTOCheck = (IntineraryDTO) restTemplateService.deserializeStringJsonToObject(sTest,
+				IntineraryDTO.class);
+		logger.info("Test - deserializeStringJsonToObject: {}", intineraryDTOCheck);
+		assertNotNull(intineraryDTOCheck);
+		assertEquals(intineraryDTO, intineraryDTOCheck);
 	}
 
 }

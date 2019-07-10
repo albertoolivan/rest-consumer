@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Custom ResteTemplate that build url with @pathVariable and @RequestParams,
@@ -187,13 +188,13 @@ public class RestTemplateService {
 
 			if (isError(response.getStatusCode())) {
 				// throw Exception from ExceptionResponseDTO
-				ExceptionResponseDTO error = (ExceptionResponseDTO) deserializeSringJsonToObject(responseBody,
+				ExceptionResponseDTO error = (ExceptionResponseDTO) deserializeStringJsonToObject(responseBody,
 						ExceptionResponseDTO.class);
 				logger.error(error.toString());
 				throw new RestClientException(error.getMessage() + "\n" + error.getStackTrace());
 			} else {
 				// result is ok, convert into excepted DTO
-				T result = (T) deserializeSringJsonToObject(responseBody, responseType);
+				T result = (T) deserializeStringJsonToObject(responseBody, responseType);
 				return result;
 			}
 		} catch (IOException e) {
@@ -222,11 +223,10 @@ public class RestTemplateService {
 	 * @throws JsonMappingException
 	 * @throws IOException
 	 */
-	public Object deserializeSringJsonToObject(String entry, Class<?> clazz)
+	public Object deserializeStringJsonToObject(String entry, Class<?> clazz)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		Object obj = mapper.readValue(entry, clazz);
-		return obj;
+		mapper.registerModule(new JavaTimeModule());
+		return mapper.readValue(entry, clazz);
 	}
-
 }
