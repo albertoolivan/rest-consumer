@@ -113,6 +113,20 @@ public class AppConsumerTest {
 		then(response.getBody()).contains("Rest-producer service not available, please try later...");
 	}
 	
+	@Test
+	public void getListTest() throws InterruptedException {
+		// registration has to take place...
+		Thread.sleep(3000);
+
+		logger.info("Call /city/all to check controller return Rest-producer is not available.");
+		ResponseEntity<String> response = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.port + "/city/all", String.class);
+
+		logger.info("Response: {}", response.getBody());
+		then(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+		then(response.getBody()).contains("Rest-producer service not available, please try later...");
+	}
+	
 	@Configuration
 	@EnableAutoConfiguration
 	@EnableEurekaServer
